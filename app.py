@@ -72,12 +72,10 @@ def webhook():
         agua = get_ultima_agua()
 
         if agua and temperatura and humedad:
-            msg.body(f"Los datos de los sensores son: \n*Temperatura:* {temperatura}°C 
-                     \n*Humedad:* {humedad}% 
-                     \n*Agua:* {agua}%")
+            msg.body(f"Los datos de los sensores son: \n*Temperatura:* {temperatura}°C\n*Humedad:* {humedad}%\n*Agua:* {agua}%")
         else:
             msg.body("No se pudieron obtener los datos de los sensores. Verifica el servidor.")
-            
+
     return str(resp)
         
 @app.route('/send-data', methods=['POST'])
