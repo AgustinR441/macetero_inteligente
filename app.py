@@ -36,7 +36,7 @@ def get_ultima_agua():
     conn = sqlite3.connect('data.db')
     cursor = conn.cursor()
     cursor.execute("SELECT humedadSub FROM datos ORDER BY id DESC LIMIT 1")
-    result = cursor.fecthone()
+    result = cursor.fetchone()
     conn.close()
     if result:
         return result[0]
