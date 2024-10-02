@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MaceteroInteligente - Insertar Datos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png')}}" type="image/png">
+</head>
+
+<body class="bg-success d-flex align-items-center justify-content-center">
+  <div class="container2 rounded p-5 bg-light mt-5 mb-5">
+    <div class="text-center mb-4">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="MaceteroInteligente" width="200"> <br>
+        <h1 class="text-success">MaceteroInteligente </h1>
+        <p class="text-muted">Desarrollado por T2° Agust&iacute;n Riquelme <br>7° Ingeniería Naval Electrónica 🌱</p>
+    </div>
+
+    <h2 class="mb-4 text-center">Insertar Datos de Sensores</h2>
+    <div class="text-center">
+      <p class="text-warning">Funcionalidad de uso exclusivo para fase de desarrollo.</p>
+    </div>
+    <!-- Formulario para ingresar datos -->
+    <form action="/send-data" method="POST" class="mb-3" name="data">
+      <div class="form-group">
+        <label for="temperatura">Temperatura (°C):</label>
+        <input type="number" class="form-control" id="temperatura" name="temperatura" step="0.1" required>
+      </div>
+
+      <div class="form-group">
+        <label for="humedadUp">Humedad Superior (%):</label>
+        <input type="number" class="form-control" id="humedadUp" name="humedadUp" step="0.1" required>
+      </div>
+
+      <div class="form-group">
+        <label for="humedadSub">Humedad Inferior (%):</label>
+        <input type="number" class="form-control" id="humedadSub" name="humedadSub" step="0.1" required>
+      </div>
+
+      <div class="form-group">
+        <label for="fecha">Fecha:</label>
+        <input type="date" class="form-control" id="fecha" name="fecha" readonly>
+      </div>
+
+      <div class="form-group">
+        <label for="hora">Hora:</label>
+        <input type="time" class="form-control" id="hora" name="hora" readonly>
+      </div>
+
+      <div class="text-center">
+        <a href="/"class="btn btn-primary mt-3">Volver</a>
+        <button type="submit" class="btn btn-success mt-3">Insertar Datos</button>
+      </div>
+    </form>
+
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    window.onload = function() {
+      function updateTime() {
+        // Obtener la fecha y la hora actuales
+        const now = new Date();
+  
+        // Formatear la fecha en formato YYYY-MM-DD
+        const year = now.getFullYear();
+        const month = ('0' + (now.getMonth() + 1)).slice(-2);
+        const day = ('0' + now.getDate()).slice(-2);
+        const formattedDate = `${year}-${month}-${day}`;
+  
+        // Formatear la hora en formato HH:MM:SS
+        const hours = ('0' + now.getHours()).slice(-2);
+        const minutes = ('0' + now.getMinutes()).slice(-2);
+        const seconds = ('0' + now.getSeconds()).slice(-2);
+        const formattedTime = `${hours}:${minutes}:${seconds}`;
+  
+        // Asignar la fecha y la hora a los campos
+        document.getElementById('fecha').value = formattedDate;
+        document.getElementById('hora').value = formattedTime;
+      }
+  
+      // Actualizar la hora cada segundo
+      setInterval(updateTime, 1000);
+  
+      // Llamar la función para inicializar el valor inmediatamente
+      updateTime();
+    };
+  </script>
+  
+  
+</body>
+</html>
