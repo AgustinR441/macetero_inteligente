@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, render_template, redirect
+from twilio.twiml.messaging_response import MessagingResponse
 import sqlite3
 
 app = Flask(__name__)
@@ -11,6 +12,74 @@ def index():
 def insertar():
     return render_template('insertar.html')  
 
+def get_ultima_temperatura():
+    conn = sqlite3.connect('data.db')  
+    cursor = conn.cursor()
+    cursor.execute("SELECT temperatura FROM datos ORDER BY id DESC LIMIT 1")
+    result = cursor.fetchone()
+    conn.close()
+    if result:
+        return result[0]
+    return None
+
+def get_ultima_humedad():
+    conn = sqlite3.connect('data.db') 
+    cursor = conn.cursor()
+    cursor.execute("SELECT humedadUp FROM datos ORDER BY id DESC LIMIT 1")
+    result = cursor.fetchone()
+    conn.close()
+    if result:
+        return result[0]
+    return None
+
+def get_ultima_agua():
+    conn = sqlite3.connect('data.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT humedadSub FROM datos ORDER BY id DESC LIMIT 1")
+    result = cursor.fecthone()
+    conn.close()
+    if result:
+        return result[0]
+    return None
+
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    mensajeLlegada = request.values.get('Body', '').lower()
+    resp = MessagingResponse()
+    msg = resp.message()
+
+    if 'temperatura' in mensajeLlegada:
+        temperatura = get_ultima_temperatura()
+        if temperatura:
+            msg.body(f"La temperatura actual es {temperatura}°C")
+        else:
+            msg.body("No se pudo obtener la temperatura. Verifica el servidor.")
+    if 'humedad' in mensajeLlegada:
+        humedad = get_ultima_humedad()
+        if humedad:
+            msg.body(f"La humedad actual es {humedad}%")
+        else:
+            msg.body("No se pudo obtener la humedad. Verifica el servidor.")
+    if 'agua' in mensajeLlegada:
+        agua = get_ultima_agua()
+        if agua:
+            msg.body(f"El nivel de agua actual es {agua}%")
+        else:
+            msg.body("No se pudo obtener el nivel de agua. Verifica el servidor.")
+    if 'datos' in mensajeLlegada:
+        temperatura = get_ultima_temperatura()
+        humedad = get_ultima_humedad()
+        agua = get_ultima_agua()
+
+        if agua and temperatura and humedad:
+            msg.body(f"Los datos de los sensores son: \n*Temperatura:* {temperatura}°C 
+                     \n*Humedad:* {humedad}% 
+                     \n*Agua:* {agua}%")
+        else:
+            msg.body("No se pudieron obtener los datos de los sensores. Verifica el servidor.")
+            
+    return str(resp)
+        
 @app.route('/send-data', methods=['POST'])
 def send_data():
     temperatura = request.form['temperatura']
