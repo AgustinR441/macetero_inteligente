@@ -9,7 +9,7 @@ def index():
     return render_template('index.html')
 
 @app.route('/db')
-def index():
+def db():
     return render_template('db.html')
 
 @app.route('/insertar', methods=['GET'])
