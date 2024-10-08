@@ -11,7 +11,7 @@ window.onload = function () {
                 });
 
                 // Ordenar los datos en orden descendente para la tabla (más reciente primero)
-                const tableData = [...data].sort((a, b) => b.dateObj - a.dateObj).slice(0, 20);
+                const tableData = [...data].sort((a, b) => b.dateObj - a.dateObj);
 
                 // Ordenar los datos en orden ascendente para el gráfico (más antiguo primero)
                 const chartData = [...tableData].sort((a, b) => a.dateObj - b.dateObj);
