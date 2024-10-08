@@ -15,13 +15,13 @@ window.onload = function () {
                         fill: false
                     },
                     {
-                        label: 'Humedad Superior (%)',
+                        label: 'Humedad (%)',
                         data: [],
                         borderColor: 'rgba(54, 162, 235, 1)',
                         fill: false
                     },
                     {
-                        label: 'Humedad Inferior (%)',
+                        label: 'Agua (%)',
                         data: [],
                         borderColor: 'rgba(75, 192, 192, 1)',
                         fill: false

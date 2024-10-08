@@ -8,7 +8,8 @@
 // Listas de redes WiFi y servidores
 const char* ssids[] = {"INTERNET CASA", "TP-Link_5406_CABAÑAS", "ZEUS"};
 const char* passwords[] = {"xR3#9pZu", "52711855", "Olimpo2020*"};
-const char* serverNames[] = {"http://192.168.100.8:5000/send-data-esp32", "http://192.168.0.109:5000/send-data-esp32", "http://10.60.1.50:5000/send-data-esp32"};
+const char* serverNames[] = {"https://macetero-inteligente.onrender.com/send-data-esp32", "https://macetero-inteligente.onrender.com/send-data-esp32", "https://macetero-inteligente.onrender.com/send-data-esp32"};
+//const char* serverNames[] = {"http://192.168.100.8:5000/send-data-esp32", "http://192.168.0.109:5000/send-data-esp32", "http://10.60.1.50:5000/send-data-esp32"};
 const int numNetworks = sizeof(ssids) / sizeof(ssids[0]);
 
 // Variable global para almacenar el índice de la red conectada
@@ -20,6 +21,7 @@ const long gmtOffset_sec = -10800;  // Hora Chile (-3 horas)
 const int daylightOffset_sec = 0;   // Horario de verano
 
 // Inicialización de Variables
+int pinRele = 13;
 int pinDHT = 15;
 int pinHumedadSub = 34;
 float temperatura;
@@ -37,7 +39,9 @@ LiquidCrystal_I2C lcd(0x27, 20, 4);  // Display LCD
 void setup() {
   Serial.begin(115200);
 
-  dht.setup(pinDHT, DHTesp::DHT11);
+  pinMode(pinRele, OUTPUT);
+
+  dht.setup(pinDHT, DHTesp::DHT22);
   lcd.init();
   lcd.backlight();
 
@@ -110,13 +114,20 @@ void loop() {
     humedadAnaloga = analogRead(pinHumedadSub);
     humedadSub = map(humedadAnaloga, 0, 4095, 100, 0);
 
+    String humedadStr = String(humedadSub, 2);
+    // Agregar ceros iniciales si es necesario
+    if (humedadSub < 10) {
+      humedadStr = "0" + humedadStr;
+    }
+
     Serial.print("Temperatura: ");
     Serial.print(temperatura);
     Serial.print("°C, Humedad: ");
     Serial.print(humedadUp);
     Serial.print("% ");
-    Serial.print("HumedadSub: ");
-    Serial.println(humedadSub);
+    Serial.print("Agua: ");
+    Serial.print(humedadStr);
+    Serial.println("%");
 
     lcd.setCursor(0, 0);
     lcd.print("Macetero Inteligente");
@@ -128,6 +139,11 @@ void loop() {
     lcd.print(humedadUp);
     lcd.print("%");
 
+    lcd.setCursor(5, 2);
+    lcd.print("Agua: ");
+    lcd.print(humedadStr);
+    lcd.print("%");
+
     lcd.setCursor(2, 3);
     lcd.print("por T2");
     lcd.print(char(223));
@@ -136,6 +152,11 @@ void loop() {
     obtenerFechaHoraActual();
 
     enviarDataServidor(temperatura, humedadUp, humedadSub, fecha, hora);
+    if(temperatura > 25){
+      digitalWrite(pinRele, HIGH);
+    }else{
+      digitalWrite(pinRele, LOW);
+    }
   }
 
   delay(2000);
