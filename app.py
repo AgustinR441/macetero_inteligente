@@ -8,6 +8,10 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+@app.route('/db')
+def index():
+    return render_template('db.html')
+
 @app.route('/insertar', methods=['GET'])
 def insertar():
     return render_template('insertar.html')  
