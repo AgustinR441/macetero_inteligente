@@ -69,7 +69,7 @@ def webhook():
         if agua:
             msg.body(f"El nivel de agua actual es {agua}%")
         else:
-            msg.body("No se pudo obtener el nivel de agua. Verifica el servidor.")
+            msg.body("El nivel de agua actual es 0.0%")
     if 'datos' in mensajeLlegada:
         temperatura = get_ultima_temperatura()
         humedad = get_ultima_humedad()

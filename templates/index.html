@@ -22,7 +22,7 @@
     <div class="text-center mb-4">
         <a href="/insertar" class="btn btn-primary mb-2 mr-2">Insertar Dato</a>
         <button id="toggleChartBtn" class="btn btn-primary mb-2 mr-2">Ver gr&aacute;fico</button>
-        <a href="/eliminar-datos" class="btn btn-danger mb-2" id="reset-btn">Resetear Datos</a>
+        <a href="#" class="btn btn-danger mb-2" id="reset-btn">Resetear Datos</a>
     </div>
 
     <div id="chartContainer" style="display: none;">
@@ -58,7 +58,7 @@
   <script src="{{ url_for('static', filename='app.js') }}"></script>
   <script>
     document.getElementById('reset-btn').addEventListener('click', function(event) {
-      var confirmed = confirm("¿Está seguro de que desea borrar todos los datos de la base de datos?");
+      var confirmed = confirm("Funcionalidad desactivada.");
       if (!confirmed) {
         event.preventDefault(); 
       }
