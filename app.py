@@ -75,7 +75,7 @@ def webhook():
         humedad = get_ultima_humedad()
         agua = get_ultima_agua()
 
-        if agua and temperatura and humedad:
+        if temperatura and humedad:
             msg.body(f"Los datos de los sensores son: \n*Temperatura:* {temperatura}°C\n*Humedad:* {humedad}%\n*Agua:* {agua}%")
         else:
             msg.body("No se pudieron obtener los datos de los sensores. Verifica el servidor.")
